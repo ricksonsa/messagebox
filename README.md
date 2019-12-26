@@ -1,27 +1,69 @@
-# MessageBoxPlugin
+## Important
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
+message-box-plugin depends on Ngx-Mask for mask validation at inputs.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installing
 
-## Code scaffolding
+```bash
+$ npm install --save message-box-plugin
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Quickstart
 
-## Build
+Import **message-box-plugin** module in Angular app.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```typescript
+import { MessageBoxModule } from  'message-box-plugin';
 
-## Running unit tests
+@NgModule({
+  (...)
+  imports: [
+    MessageBoxModule
+  ]
+  (...)
+})
+```
+### Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+     constructor(private messageBoxService: MessageBoxService) {
 
-## Running end-to-end tests
+    let messageBox = MessageBox
+      .Create('title', 'message')
+      .AddInput('name')
+      .SetInputValidation('name', 5, '99999999')
+      .AddButton('Ok', () => console.log('ok clicked', messageBox.GetInputValueByName('name')), ButtonType.primary)
+      .AddButton('Cancel', () => console.log('Cancel clicked', messageBox.GetInputValueByName('name')),                 ButtonType.outlineDanger);
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+    messageBoxService.present(messageBox);
+    
+  }
+```
 
-## Further help
+MessageBox.Create(title, message) - Creates an instance of MessageBox class.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+AddInput receives 3 parameters: name, placeholder(optional) and value(optional)
+
+    - name : The reference to the input to get it's value or set it's validation.
+    - placeholder : Input placeholder
+    - value : Input value
+
+Use GetInputValueByName('name of the input') on a MessageBox instance to get an input's value.
+
+SetInputValidation receives 3 parameters: id, maxLength(optional) and mask(optional)
+
+    - id : Reference to the input on a MessageBox, can be array index or the name of the input.
+    - maxLength : maxLength of the input
+    - mask - Mask using Ngx-Mask plugin.
+
+AddButton receives 3 parameters: text, function and type
+
+    - text : The text inside the button.
+    - function : The callback function that you be passsed to the eventhandler.
+    - type : ButtonType Enum with the css class
+
+
+With the instance of MessageBox class already setted up
+
+call MessageBoxService.present(messageBox) passing that instance as parameter.

@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14"
+    "@angular/core": "^8.2.14",
+    "ngx-mask": "^8.1.6",
+    "bootstrap": "^4.3.1"
+
   }
 }
