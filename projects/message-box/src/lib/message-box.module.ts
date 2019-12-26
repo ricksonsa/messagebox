@@ -6,9 +6,12 @@ import { BrowserModule } from '@angular/platform-browser'
 
 @NgModule({
   declarations: [MessageBoxComponent],
+  entryComponents: [
+    MessageBoxComponent
+  ],
   imports: [
     FormsModule,
-    NgxMaskModule,
+    NgxMaskModule.forRoot(),
     BrowserModule
   ],
   exports: [MessageBoxComponent]
