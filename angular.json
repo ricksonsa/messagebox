@@ -120,6 +120,41 @@
           }
         }
       }
+    },
+    "MessageBox": {
+      "projectType": "library",
+      "root": "projects/message-box",
+      "sourceRoot": "projects/message-box/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/message-box/tsconfig.lib.json",
+            "project": "projects/message-box/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/message-box/src/test.ts",
+            "tsConfig": "projects/message-box/tsconfig.spec.json",
+            "karmaConfig": "projects/message-box/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/message-box/tsconfig.lib.json",
+              "projects/message-box/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "MessageBoxPlugin"
 }
