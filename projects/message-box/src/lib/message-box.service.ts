@@ -137,8 +137,13 @@ export class MessageBoxInput {
 }
 
 export enum ButtonType {
-  success = 'btn-success',
-  primary = 'btn-primary',
-  secondary = 'btn-outline-secondary',
-  danger = 'btn-danger'
+  success = 'success',
+  primary = 'primary',
+  secondary = 'secondary',
+  danger = 'danger',
+  //outline
+  outlinePrimary = 'outline-primary',
+  outlineSecondary = 'outline-secondary',
+  outlineDanger = 'outline-danger',
+  outlineSuccess = 'outline-success',
 }

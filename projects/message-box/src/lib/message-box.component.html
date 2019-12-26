@@ -10,6 +10,7 @@
 
         <input
           *ngFor="let input of inputs"
+          class="form-control"
           [placeholder]="input.placeholder || ''"
           [(ngModel)]="input.value"
           [maxLength]="input.maxLength || 200"
@@ -21,7 +22,7 @@
         <button
           *ngFor="let button of buttons"
           (click)="btnClickEvent(button)"
-          class="btn {{ button.type || 'btn-outline-secondary' }}"
+          class="btn {{ button.type || 'outline-secondary' }}"
         >
           {{ button.text }}
         </button>
