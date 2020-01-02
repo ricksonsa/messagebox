@@ -1,5 +1,6 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver, ApplicationRef, Injector, EmbeddedViewRef } from '@angular/core';
 import { MessageBoxComponent } from '../public-api';
+import { FormGroup, FormControl, ValidatorFn, FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class MessageBoxService {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private applicationRef: ApplicationRef,
-    private injector: Injector,
+    private injector: Injector
   ) { }
 
   present(modalOptions: MessageBox) {
@@ -29,11 +30,13 @@ export class MessageBoxService {
     this.componentRef.instance.modalRef = this.componentRef;
     this.componentRef.instance.applicationRef = this.applicationRef;
 
+    this.componentRef.instance.formGroup = modalOptions.formGroup;
     this.componentRef.instance.title = modalOptions.title;
     this.componentRef.instance.message = modalOptions.message;
     this.componentRef.instance.buttons = modalOptions.buttons;
     this.componentRef.instance.inputs = modalOptions.inputs;
     this.componentRef.instance.allowBackdropDismiss = modalOptions.allowBackdropDismiss;
+    
 
     return this.componentRef;
   }
@@ -50,13 +53,15 @@ export class MessageBox {
   buttons: MessageBoxButton[];
   inputs: MessageBoxInput[];
   allowBackdropDismiss: boolean;
+  formGroup?: FormGroup;
 
-  constructor(title: string, message: string, buttons?: MessageBoxButton[], inputs?: MessageBoxInput[]) {
+  private constructor(title: string, message: string, buttons?: MessageBoxButton[], inputs?: MessageBoxInput[], formGroup?: FormGroup) {
     this.title = title;
     this.message = message;
     this.buttons = [];
     this.inputs = [];
     this.allowBackdropDismiss = true;
+    this.formGroup = formGroup;
 
     if (buttons)
       this.buttons = buttons;
@@ -65,8 +70,14 @@ export class MessageBox {
       this.inputs = inputs;
   }
 
-  static Create(title: string, message: string): MessageBox {
-    return new MessageBox(title, message);
+  static Create(title: string, message: string, hasFormGroup?: boolean): MessageBox {
+    let messageBox = new MessageBox(title, message);
+
+    if(hasFormGroup){
+      let formBuilder = new FormBuilder();
+      messageBox.formGroup = formBuilder.group({});
+    }
+      return messageBox;
   }
 
   public GetInputValueByIndex(inputIndex: number): string {
@@ -74,22 +85,40 @@ export class MessageBox {
   }
 
   public GetInputValueByName(name: string): string {
-    let input = this.inputs.filter(x => x.name == name);
+    if(this.formGroup) {
+      return this.formGroup.controls[name].value;
+    }
+    else {
+      let input = this.inputs.filter(x => x.name == name);
 
-    if (input)
-      return input[0].value;
+      if (input)
+        return input[0].value;
+    }
+   
 
     return null;
   }
 
-  public AddButton(text: string, func?: Function,type?: ButtonType): MessageBox {
-    this.buttons.push(new MessageBoxButton(text, type, func));
+  public AddButton(text: string, func?: Function, type?: ButtonType, isConfirmButton?: boolean): MessageBox {
+    this.buttons.push(new MessageBoxButton(text, type, func, isConfirmButton));
     return this;
   }
 
   public AddInput(name: string, placeholder?: string, value?: string): MessageBox {
     this.inputs.push(new MessageBoxInput(placeholder, value, name));
+
+    if(this.formGroup) {
+        this.formGroup.addControl(name, new FormControl(''));
+    }
+
     return this;
+  }
+
+  public SetInputValidators(id: string, formValidators: ValidatorFn[]) {
+    if(this.formGroup)
+      this.formGroup.controls[id].setValidators(formValidators);
+
+      return this;
   }
 
   public SetInputValidation(id: number | string, maxLength?: number, mask?: string): MessageBox {
@@ -112,11 +141,13 @@ export class MessageBoxButton {
   text: string;
   type?: ButtonType = ButtonType.secondary;
   func?: Function;
+  isConfirmButton?: boolean;
 
-  constructor(text: string, type?: ButtonType, func?: Function) {
+  constructor(text: string, type?: ButtonType, func?: Function, isConfirmButton?: boolean) {
     this.text = text;
     this.type = type;
     this.func = func;
+    this.isConfirmButton = isConfirmButton;
   }
 
 }

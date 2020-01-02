@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MessageBoxButton, MessageBoxInput } from '../public-api';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'lib-MessageBox',
@@ -12,6 +13,7 @@ export class MessageBoxComponent  {
   public buttons: MessageBoxButton[] = [];
   public inputs: MessageBoxInput[] = [];
   public allowBackdropDismiss: boolean;
+  public formGroup: FormGroup;
 
   public modalRef: any;
   public applicationRef: any;
@@ -24,6 +26,8 @@ export class MessageBoxComponent  {
   }
 
   btnClickEvent(button: MessageBoxButton) {
+console.log('btn', button, this.inputs);
+
     if(button.func)
       button.func();
 

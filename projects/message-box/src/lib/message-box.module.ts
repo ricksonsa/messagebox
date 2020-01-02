@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MessageBoxComponent } from './message-box.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { BrowserModule } from '@angular/platform-browser'
 
@@ -12,7 +12,8 @@ import { BrowserModule } from '@angular/platform-browser'
   imports: [
     FormsModule,
     NgxMaskModule.forRoot(),
-    BrowserModule
+    BrowserModule,
+    ReactiveFormsModule
   ],
   exports: [MessageBoxComponent]
 })

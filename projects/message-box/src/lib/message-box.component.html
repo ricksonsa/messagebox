@@ -8,24 +8,40 @@
       <div class="booble-modal-content">
         <p>{{ message }}</p>
 
-        <input
-          *ngFor="let input of inputs"
-          class="form-control"
-          [placeholder]="input.placeholder || ''"
-          [(ngModel)]="input.value"
-          [maxLength]="input.maxLength || 200"
-          [mask]="input.mask"
-        />
-      </div>
+        <div *ngIf="!formGroup" >
 
-      <div class="booble-modal-footer">
-        <button
-          *ngFor="let button of buttons"
-          (click)="btnClickEvent(button)"
-          class="btn {{ button.type || 'btn-outline-secondary' }}"
-        >
-          {{ button.text }}
-        </button>
+            <input *ngFor="let input of inputs" class="form-control" [placeholder]="input.placeholder || '222222222222222'"
+              [(ngModel)]="input.value" [maxLength]="input.maxLength || 200" [mask]="input.mask || ''" />
+        
+          <div class="booble-modal-footer">
+            <button *ngFor="let button of buttons" (click)="btnClickEvent(button)"
+              class="btn {{ button.type || 'btn-outline-secondary' }}">
+              {{ button.text }}
+            </button>
+          </div>
+
+        <div *ngIf="formGroup">
+          <form [formGroup]="formGroup">
+
+            <input *ngFor="let input of inputs" class="form-control" [formControlName]="input.name"
+              [placeholder]="input.placeholder || ''" [maxLength]="input.maxLength || 200" [mask]="input.mask || ''" />
+
+          </form>
+
+          <div class="booble-modal-footer">
+            <button *ngFor="let button of buttons" [disabled]="button.isConfirmButton && !formGroup.valid"
+              (click)="btnClickEvent(button)" class="btn {{ button.type || 'btn-outline-secondary' }}">
+              {{ button.text }}
+            </button>
+          </div>
+
+
+        </div>
+
+        
+
+
+        </div>
       </div>
     </div>
   </div>
