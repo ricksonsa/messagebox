@@ -3,11 +3,12 @@ import { MessageBoxButton, MessageBoxInput } from '../public-api';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'lib-MessageBox',
+  selector: 'message-box',
   templateUrl: './message-box.component.html',
   styleUrls: ['./message-box.component.css']
 })
-export class MessageBoxComponent  {
+export class MessageBoxComponent
+{
   public title: string;
   public message: string;
   public buttons: MessageBoxButton[] = [];
@@ -18,29 +19,33 @@ export class MessageBoxComponent  {
   public modalRef: any;
   public applicationRef: any;
 
-  constructor() {
+  constructor()
+  {
+
   }
 
-  onClick(e) {
+  onClick(e)
+  {
     e.stopPropagation();
   }
 
-  btnClickEvent(button: MessageBoxButton) {
-console.log('btn', button, this.inputs);
-
-    if(button.func)
+  btnClickEvent(button: MessageBoxButton)
+  {
+    if (button.func)
       button.func();
 
     this.dismiss(null);
   }
 
-  backdropDismiss() {
-    if(this.allowBackdropDismiss)
+  backdropDismiss()
+  {
+    if (this.allowBackdropDismiss)
       this.dismiss(null);
   }
-  
-  dismiss(event) {
-    if(event)
+
+  dismiss(event)
+  {
+    if (event)
       event.stopPropagation();
 
     this.applicationRef.detachView(this.modalRef.hostView);
