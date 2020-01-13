@@ -2,40 +2,40 @@
   <div class="booble-modal-background">
     <div class="booble-modal" (click)="onClick($event)">
       <div class="booble-modal-header">
-        <h3>{{ title }}</h3>
+        <h3>{{ modalOptions?.title }}</h3>
       </div>
 
       <div class="booble-modal-content">
-        <p>{{ message }}</p>
+        <p>{{ modalOptions?.message }}</p>
 
-        <div *ngIf="!formGroup">
+        <div *ngIf="!modalOptions?.hasFormGroup">
           <input
-            *ngFor="let input of inputs"
+            *ngFor="let input of modalOptions?.inputs"
             class="form-control"
             [placeholder]="input.placeholder || '222222222222222'"
             [(ngModel)]="input.value"
             [maxLength]="input.maxLength || 200"
             [mask]="input.mask || ''"
           />
+        </div>
 
-          <div *ngIf="formGroup">
-            <form [formGroup]="formGroup">
-              <input
-                *ngFor="let input of inputs"
-                class="form-control"
-                [formControlName]="input.name"
-                [placeholder]="input.placeholder || ''"
-                [maxLength]="input.maxLength || 200"
-                [mask]="input.mask || ''"
-              />
-            </form>
-          </div>
+        <div *ngIf="modalOptions?.hasFormGroup">
+          <form [formGroup]="modalOptions?.formGroup">
+            <input
+              *ngFor="let input of modalOptions?.inputs"
+              class="form-control"
+              [formControlName]="input.name"
+              [placeholder]="input.placeholder || ''"
+              [maxLength]="input.maxLength || 200"
+              [mask]="input.mask || ''"
+            />
+          </form>
         </div>
       </div>
 
-      <div *ngIf="!formGroup" class="booble-modal-footer">
+      <div *ngIf="!modalOptions?.hasFormGroup" class="booble-modal-footer">
         <button
-          *ngFor="let button of buttons"
+          *ngFor="let button of modalOptions?.buttons"
           (click)="btnClickEvent(button)"
           class="btn {{ button.type || 'btn-outline-secondary' }}"
         >
@@ -43,10 +43,10 @@
         </button>
       </div>
 
-      <div *ngIf="formGroup" class="booble-modal-footer">
+      <div *ngIf="modalOptions?.hasFormGroup" class="booble-modal-footer">
         <button
-          *ngFor="let button of buttons"
-          [disabled]="button.isConfirmButton && !formGroup.valid"
+          *ngFor="let button of modalOptions?.buttons"
+          [disabled]="button.isConfirmButton && !modalOptions?.formGroup.valid"
           (click)="btnClickEvent(button)"
           class="btn {{ button.type || 'btn-outline-secondary' }}"
         >

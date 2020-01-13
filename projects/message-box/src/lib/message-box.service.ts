@@ -30,13 +30,16 @@ export class MessageBoxService {
     this.componentRef.instance.modalRef = this.componentRef;
     this.componentRef.instance.applicationRef = this.applicationRef;
 
-    this.componentRef.instance.formGroup = modalOptions.formGroup;
-    this.componentRef.instance.title = modalOptions.title;
-    this.componentRef.instance.message = modalOptions.message;
-    this.componentRef.instance.buttons = modalOptions.buttons;
-    this.componentRef.instance.inputs = modalOptions.inputs;
-    this.componentRef.instance.allowBackdropDismiss = modalOptions.allowBackdropDismiss;
-    
+    this.componentRef.instance.modalOptions = modalOptions;
+    console.log("mbox", this.componentRef.instance.modalOptions);
+
+    // this.componentRef.instance.formGroup = modalOptions.formGroup;
+    // this.componentRef.instance.title = modalOptions.title;
+    // this.componentRef.instance.message = modalOptions.message;
+    // this.componentRef.instance.buttons = modalOptions.buttons;
+    // this.componentRef.instance.inputs = modalOptions.inputs;
+    // this.componentRef.instance.allowBackdropDismiss = modalOptions.allowBackdropDismiss;
+
 
     return this.componentRef;
   }
@@ -53,6 +56,7 @@ export class MessageBox {
   buttons: MessageBoxButton[];
   inputs: MessageBoxInput[];
   allowBackdropDismiss: boolean;
+  hasFormGroup?: boolean;
   formGroup?: FormGroup;
 
   private constructor(title: string, message: string, buttons?: MessageBoxButton[], inputs?: MessageBoxInput[], formGroup?: FormGroup) {
@@ -62,6 +66,8 @@ export class MessageBox {
     this.inputs = [];
     this.allowBackdropDismiss = true;
     this.formGroup = formGroup;
+    if (this.formGroup)
+      this.hasFormGroup = true;
 
     if (buttons)
       this.buttons = buttons;
@@ -73,11 +79,12 @@ export class MessageBox {
   static Create(title: string, message: string, hasFormGroup?: boolean): MessageBox {
     let messageBox = new MessageBox(title, message);
 
-    if(hasFormGroup){
+    if (hasFormGroup) {
       let formBuilder = new FormBuilder();
-      messageBox.formGroup = formBuilder.group({});
+      messageBox = new MessageBox(title, message, [], [], formBuilder.group({}));
     }
-      return messageBox;
+
+    return messageBox;
   }
 
   public GetInputValueByIndex(inputIndex: number): string {
@@ -85,7 +92,7 @@ export class MessageBox {
   }
 
   public GetInputValueByName(name: string): string {
-    if(this.formGroup) {
+    if (this.formGroup) {
       return this.formGroup.controls[name].value;
     }
     else {
@@ -94,7 +101,7 @@ export class MessageBox {
       if (input)
         return input[0].value;
     }
-   
+
 
     return null;
   }
@@ -107,18 +114,18 @@ export class MessageBox {
   public AddInput(name: string, placeholder?: string, value?: string): MessageBox {
     this.inputs.push(new MessageBoxInput(placeholder, value, name));
 
-    if(this.formGroup) {
-        this.formGroup.addControl(name, new FormControl(''));
+    if (this.formGroup) {
+      this.formGroup.addControl(name, new FormControl(''));
     }
 
     return this;
   }
 
   public SetInputValidators(id: string, formValidators: ValidatorFn[]) {
-    if(this.formGroup)
+    if (this.formGroup)
       this.formGroup.controls[id].setValidators(formValidators);
 
-      return this;
+    return this;
   }
 
   public SetInputValidation(id: number | string, maxLength?: number, mask?: string): MessageBox {

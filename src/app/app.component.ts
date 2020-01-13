@@ -25,7 +25,7 @@ export class AppComponent {
       .AddButton('Ok', () => console.log('ok clicked', [messageBox.GetInputValueByName('name'), messageBox.formGroup.valid]), ButtonType.primary, true)
       .AddButton('Cancel', () => console.log('Cancel clicked', messageBox.GetInputValueByName('name')), ButtonType.outlineDanger);
 
-    messageBoxService.present(mbox);
-    
+    messageBoxService.present(messageBox);
+
   }
 }

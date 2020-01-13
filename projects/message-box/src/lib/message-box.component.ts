@@ -1,3 +1,4 @@
+import { MessageBox } from './message-box.service';
 import { Component } from '@angular/core';
 import { MessageBoxButton, MessageBoxInput } from '../public-api';
 import { FormGroup } from '@angular/forms';
@@ -7,44 +8,33 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './message-box.component.html',
   styleUrls: ['./message-box.component.css']
 })
-export class MessageBoxComponent
-{
-  public title: string;
-  public message: string;
-  public buttons: MessageBoxButton[] = [];
-  public inputs: MessageBoxInput[] = [];
-  public allowBackdropDismiss: boolean;
-  public formGroup: FormGroup;
+export class MessageBoxComponent {
+  public modalOptions: MessageBox;
 
   public modalRef: any;
   public applicationRef: any;
 
-  constructor()
-  {
+  constructor() {
 
   }
 
-  onClick(e)
-  {
+  onClick(e) {
     e.stopPropagation();
   }
 
-  btnClickEvent(button: MessageBoxButton)
-  {
+  btnClickEvent(button: MessageBoxButton) {
     if (button.func)
       button.func();
 
     this.dismiss(null);
   }
 
-  backdropDismiss()
-  {
-    if (this.allowBackdropDismiss)
+  backdropDismiss() {
+    if (this.modalOptions && this.modalOptions.allowBackdropDismiss)
       this.dismiss(null);
   }
 
-  dismiss(event)
-  {
+  dismiss(event) {
     if (event)
       event.stopPropagation();
 
