@@ -31,15 +31,6 @@ export class MessageBoxService {
     this.componentRef.instance.applicationRef = this.applicationRef;
 
     this.componentRef.instance.modalOptions = modalOptions;
-    console.log("mbox", this.componentRef.instance.modalOptions);
-
-    // this.componentRef.instance.formGroup = modalOptions.formGroup;
-    // this.componentRef.instance.title = modalOptions.title;
-    // this.componentRef.instance.message = modalOptions.message;
-    // this.componentRef.instance.buttons = modalOptions.buttons;
-    // this.componentRef.instance.inputs = modalOptions.inputs;
-    // this.componentRef.instance.allowBackdropDismiss = modalOptions.allowBackdropDismiss;
-
 
     return this.componentRef;
   }

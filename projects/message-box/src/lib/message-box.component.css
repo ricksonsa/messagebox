@@ -132,3 +132,7 @@
     margin: 0px 5px;
     font-size: 1.5rem;
 }
+
+.booble-modal-footer button:disabled {
+    cursor: default;
+}
